@@ -6,12 +6,12 @@ const imageDiv = document.querySelector('#imageDiv');
 
 
 // Best practise declare a const object for "global" variables to reduce clutter.
-const app = {
+/* const app = {
     deckID: null,
     deckIDFetched:false,
     x3: null,
     x4: false
-};
+}; */
 
 console.log('Start');
 
@@ -108,7 +108,23 @@ console.log('Start');
     })
     .catch(err => console.log('Error: ' + err));
 } */
+function init(){
+    imageDiv.innerHTML = '';
+            
+    let img = document.createElement('img'); 
+    console.log(img);
+    
 
+    img.setAttribute("src","https://deckofcardsapi.com/static/img/back.png"); 
+    img.setAttribute("clientHeight","100%"); 
+    
+
+    imageDiv.appendChild(img);
+
+    console.log(imageDiv);
+}
+
+init();
 // Should be changed to reuse deck instead of creating a new for every press.
 const getCard = () =>{
     
