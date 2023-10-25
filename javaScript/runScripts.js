@@ -2,7 +2,7 @@
 
 // Create reference to button from index.html
 const btn0 = document.querySelector('#btn0');
-const textDiv = document.querySelector('#text');
+const imageDiv = document.querySelector('#imageDiv');
 
 
 // Best practise declare a const object for "global" variables to reduce clutter.
@@ -25,36 +25,56 @@ console.log('Start');
 //Back of a card image
 // https://deckofcardsapi.com/static/img/back.png
 
+// Workaround use "new" insead of deck id if a deck wont be reused.
+//https://deckofcardsapi.com/api/deck/new/draw/?count=2
 
-const getDeckID = () =>{
-//get deck id---
-    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(res =>{
-        if(res.ok){
-            return res.json();
-        }
-        throw new Error('Failed get new deck');
-    })
-    .then(data => {
-        console.log(data.deck_id);
-        app.deckID = data.deck_id;
-        console.log(app.deckID);
-        console.log('https://deckofcardsapi.com/api/deck/<<'+`${data.cardID}`+'>>/draw/?count=1');
-        getCard();
-    })
-    .catch(err => console.log('Error: ' + err));
-// End get deck id---
-}
+/* const getCardAsync = async() =>{
+    const getDeckID = await
+        fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
-
-const getCard = () =>{
+    const data = await getDeckID.json();
+    console.log(data);
+    console.log(data.deck_id);
+    app.deckID = await data.deck_id;
+    console.log(app.deckID);
     
-    fetch('https://deckofcardsapi.com/api/deck/<<'+`${id}`+'>>/draw/?count=1', {
+           
+        
+    // End get deck id---
+    getCard();
+    
+} */
+
+/* const getCardAsync = async() =>{
+    const getDeckID = await
+        fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+    const data = await getDeckID.json();
+    console.log(data);
+    console.log(data.deck_id);
+    app.deckID = await data.deck_id;
+    console.log(app.deckID);
+    
+           
+        
+    // End get deck id---
+    getCard();
+    
+} */
+
+/* const getCard = () =>{
+    console.log('https://deckofcardsapi.com/api/deck/<<'+`${app.deckID }`+'>>/draw/?count=1');
+    fetch('https://deckofcardsapi.com/api/deck/<<'+`${app.deckID }`+'>>/draw/?count=1', {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -87,8 +107,43 @@ const getCard = () =>{
         })
     })
     .catch(err => console.log('Error: ' + err));
+} */
+
+// Should be changed to reuse deck instead of creating a new for every press.
+const getCard = () =>{
+    
+    fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(res =>{
+        if(res.ok)
+         return res.json();
+        throw new Error('Failed access the deck');
+    })
+    .then(data => {
+        console.log(data.cards[0].image);
+
+            imageDiv.innerHTML = '';
+            
+            let img = document.createElement('img'); 
+            console.log(img);
+            
+
+            img.setAttribute("src",data.cards[0].image); 
+            img.setAttribute("clientHeight","100%"); 
+            
+        
+            imageDiv.appendChild(img);
+
+            console.log(imageDiv);
+        
+    })
+    .catch(err => console.log('Error: ' + err));
 }
 
 
-btn0.addEventListener('click', getDeckID)
+btn0.addEventListener('click', getCard)
 
